@@ -1,0 +1,33 @@
+{
+  "name": "data-warehouse-project",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "concurrently \"npm run start-frontend\" \"npm run start-backend\"",
+    "install-all": "npm install && cd frontend && npm install",
+    "start-frontend": "cd frontend && npm start",
+    "start-backend": "cd backend && node app.js",
+    "build-frontend": "cd frontend && npm run build",
+    "build-backend": "cd backend && npm run build",
+    "test": "npm run test-frontend",
+    "test-frontend": "cd frontend && npm test",
+    "test-backend": "cd backend && npm test"
+  },
+  "dependencies": {
+    "@mui/icons-material": "^5.14.7",
+    "@mui/material": "^5.14.7",
+    "axios": "^1.5.0",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.1",
+    "jwt-decode": "^3.1.2",
+    "mysql2": "^3.6.0",
+    "pdfkit": "^0.13.0",
+    "react-scripts": "^5.0.1"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.1"
+  }
+}
