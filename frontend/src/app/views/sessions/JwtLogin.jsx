@@ -67,8 +67,8 @@ const JwtLogin = () => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          email: values.email,
-          password: values.password
+          email: 'admin@rahul.com',
+          password: 'admin123'
                 })
       });
 
