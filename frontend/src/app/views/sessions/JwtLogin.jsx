@@ -1,4 +1,5 @@
-import jwt_decode from 'jwt-decode';
+// import jwt_decode from 'jwt-decode';
+import  {jwtDecode}  from "jwt-decode";
 import { useState } from 'react';
 import { Field } from 'formik';
 import { Formik, ErrorMessage, Form } from 'formik';
@@ -68,9 +69,9 @@ const JwtLogin = () => {
         },
         body: JSON.stringify({
           email: 'admin@rahul.com',
-          password: 'admin123'
+          password: 'admin@123'
                 })
-      });
+      }); 
 
       if (!response.ok) {
         throw new Error('Login failed');
@@ -80,7 +81,7 @@ const JwtLogin = () => {
       const accessToken = data.accessToken;
       localStorage.setItem('token', accessToken);
 
-      const decodedToken = jwt_decode(accessToken);
+      const decodedToken = jwtDecode(accessToken);
       if (+decodedToken.role === 1) {
         console.log('Redirecting to dashboard/default');
         navigate('/dashboard/default');

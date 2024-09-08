@@ -8,7 +8,7 @@ const app = express();
 const connection = mysql.createConnection({ //we use the same connection for all queries by createconnection
     host: 'localhost',
     user: 'root',
-    password: 'root',
+    password: '1234',
     database: 'datawarehouse',
 
 });

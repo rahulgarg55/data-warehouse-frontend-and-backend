@@ -9,6 +9,8 @@ import materialRoutes from 'app/views/material-kit/MaterialRoutes';
 // session pages
 // const NotFound = Loadable(lazy(() => import('app/views/sessions/NotFound')));
 const JwtLogin = Loadable(lazy(() => import('app/views/sessions/JwtLogin')));
+const JwtRegister = Loadable(lazy(() => import('app/views/sessions/JwtRegister')));
+const NotFound = Loadable(lazy(() => import('app/views/sessions/NotFound')))
 // const JwtRegister = Loadable(lazy(() => import('app/views/sessions/JwtRegister')));
 // const ForgotPassword = Loadable(lazy(() => import('app/views/sessions/ForgotPassword')));
 
@@ -45,7 +47,9 @@ const routes = [
 
   // session pages route
   { path: '/session/signin', element: <JwtLogin /> },
-  { path: '/', element: <Navigate to="session/signin" /> },
+   { path: '/session/signup', element: <JwtRegister /> },
+  { path: '/', element: <Navigate to="session/signup" /> },
+  // { path: '*', element: <NotFound /> }
 ];
 
 export default routes;

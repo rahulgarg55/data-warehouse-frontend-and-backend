@@ -3,22 +3,19 @@ import { LoadingButton } from '@mui/lab';
 import { Card, Checkbox, Grid, TextField } from '@mui/material';
 import { Box, styled } from '@mui/material';
 import { Paragraph } from 'app/components/Typography';
-import useAuth from 'app/hooks/useAuth';
 import { Formik } from 'formik';
 import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 
+// Styled Components
 const FlexBox = styled(Box)(() => ({ display: 'flex', alignItems: 'center' }));
-
 const JustifyBox = styled(FlexBox)(() => ({ justifyContent: 'center' }));
-
 const ContentBox = styled(JustifyBox)(() => ({
   height: '100%',
   padding: '32px',
   background: 'rgba(0, 0, 0, 0.01)'
 }));
-
 const JWTRegister = styled(JustifyBox)(() => ({
   background: '#1A2038',
   minHeight: '100vh !important',
@@ -32,45 +29,56 @@ const JWTRegister = styled(JustifyBox)(() => ({
   }
 }));
 
-// inital login credentials
+// Initial values and validation schema
 const initialValues = {
-  email: 'admin@rahul.com',
-  password: 'admin123',
-  username: 'admin',
-  remember: true
+  email: '',
+  password: '',
+  username: '',
+  remember: true,
 };
-
-// form field validation schema
 const validationSchema = Yup.object().shape({
-  password: Yup.string()
-    .min(6, 'Password must be 6 character length')
-    .required('Password is required!'),
-  email: Yup.string().email('Invalid Email address').required('Email is required!')
+  email: Yup.string().email('Invalid Email address').required('Email is required!'),
+  password: Yup.string().min(6, 'Password must be 6 character length').required('Password is required!'),
+  username: Yup.string().required('Username is required!'),
 });
 
 const JwtRegister = () => {
   const theme = useTheme();
-  const { register } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+
   const handleFormSubmit = async (values) => {
     setLoading(true);
-
     try {
-      await register(values.email, values.username, values.password);
-      const userRole = values.email === 'admin@rahul.com' ? 'admin' : 'customer';
+      const response = await fetch('http://localhost:5001/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
+      });
 
-      if (userRole === 'admin') {
-        navigate('/dashboard/default'); // Admin route
-      } else if (userRole === 'customer') {
-        navigate('/material/dialog'); // Customer route
+      if (!response.ok) {
+        throw new Error('Registration failed');
       }
+
+      const data = await response.json();
+      localStorage.setItem('token', data.token);
+
+      const userRole = data.role || 'customer'; // Add role handling if needed
+      if (userRole === 'admin') {
+        navigate('/dashboard/default');
+      } else {
+        navigate('/material/dialog');
+      }
+
       setLoading(false);
     } catch (e) {
       console.log(e);
       setLoading(false);
     }
   };
+
   return (
     <JWTRegister>
       <Card className="card">
@@ -146,7 +154,6 @@ const JwtRegister = () => {
                         checked={values.remember}
                         sx={{ padding: 0 }}
                       />
-
                       <Paragraph fontSize={13}>
                         I have read and agree to the terms of service.
                       </Paragraph>
